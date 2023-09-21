@@ -27,7 +27,7 @@ extern "C" {
     pub fn kinetic_hanger_empty(hanger: *const KineticHanger) -> bool;
     pub fn kinetic_hanger_insert(
         hanger: *mut KineticHanger,
-        t: *const libc::c_void,
+        t: *mut libc::c_void,
         aff: *const AffFunction,
     );
     pub fn kinetic_hanger_peek(hanger: *mut KineticHanger) -> *mut libc::c_void;
