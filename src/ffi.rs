@@ -21,11 +21,12 @@ extern "C" {
         aff_function: *const AffFunction,
         rhs: *const AffFunction,
     ) -> *mut i128;
+    pub fn aff_function_delete(aff_function: *mut AffFunction);
 
     pub fn kinetic_hanger_new() -> *mut KineticHanger;
     pub fn kinetic_hanger_size(hanger: *const KineticHanger) -> libc::size_t;
     pub fn kinetic_hanger_empty(hanger: *const KineticHanger) -> bool;
-    pub fn kinetic_hanger_insert(
+    pub fn kinetic_hanger_push(
         hanger: *mut KineticHanger,
         t: *mut libc::c_void,
         aff: *const AffFunction,
@@ -36,6 +37,7 @@ extern "C" {
     pub fn kinetic_hanger_remove(hanger: *mut KineticHanger, i: libc::size_t) -> *mut libc::c_void;
     pub fn kinetic_hanger_time(hanger: *const KineticHanger) -> i64;
     pub fn kinetic_hanger_advance_to(hanger: *mut KineticHanger, new_time: i64);
+    pub fn kinetic_hanger_delete(hanger: *mut KineticHanger);
 }
 
 #[test]
@@ -85,7 +87,7 @@ fn kh_test2() {
         let kh = kinetic_hanger_new();
         let aff = aff_function_new(10, 0);
         let t = Box::into_raw(Box::new(114514));
-        kinetic_hanger_insert(kh, t as *mut libc::c_void, aff);
+        kinetic_hanger_push(kh, t as *mut libc::c_void, aff);
         let sz = kinetic_hanger_size(kh);
         let e = kinetic_hanger_empty(kh);
         assert_eq!(sz, 1);
