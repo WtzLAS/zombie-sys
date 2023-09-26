@@ -49,7 +49,7 @@ impl Drop for AffFunction {
     }
 }
 
-trait KineticHeap<T>: IndexMut<usize> {
+pub trait KineticHeap<T>: IndexMut<usize> {
     fn len(&self) -> usize;
     fn is_empty(&self) -> bool;
     fn push(&mut self, t: T, aff: &AffFunction);
