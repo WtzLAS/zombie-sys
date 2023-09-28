@@ -66,6 +66,8 @@ pub struct KineticHanger<T> {
     _marker: PhantomData<T>,
 }
 
+unsafe impl<T: Send> Send for KineticHanger<T> { }
+
 impl<T> KineticHanger<T> {
     pub fn new() -> KineticHanger<T> {
         KineticHanger {
