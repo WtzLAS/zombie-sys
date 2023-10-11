@@ -23,7 +23,7 @@ extern "C" {
     ) -> *mut i128;
     pub fn aff_function_delete(aff_function: *mut AffFunction);
 
-    pub fn kinetic_hanger_new() -> *mut KineticHanger;
+    pub fn kinetic_hanger_new(time: i64) -> *mut KineticHanger;
     pub fn kinetic_hanger_size(hanger: *const KineticHanger) -> libc::size_t;
     pub fn kinetic_hanger_empty(hanger: *const KineticHanger) -> bool;
     pub fn kinetic_hanger_push(

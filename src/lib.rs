@@ -69,9 +69,9 @@ pub struct KineticHanger<T> {
 unsafe impl<T: Send> Send for KineticHanger<T> { }
 
 impl<T> KineticHanger<T> {
-    pub fn new() -> KineticHanger<T> {
+    pub fn new(time: i64) -> KineticHanger<T> {
         KineticHanger {
-            inner: unsafe { ffi::kinetic_hanger_new() },
+            inner: unsafe { ffi::kinetic_hanger_new(time) },
             _marker: PhantomData::default(),
         }
     }
