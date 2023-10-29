@@ -53,6 +53,7 @@ pub trait KineticHeap<T>: IndexMut<usize> {
     fn len(&self) -> usize;
     fn is_empty(&self) -> bool;
     fn push(&mut self, t: T, aff: &AffFunction);
+    fn cur_min_value(&self) -> i128;
     fn peek(&self) -> &T;
     fn peek_mut(&mut self) -> &mut T;
     fn pop(&mut self) -> T;
@@ -113,6 +114,10 @@ impl<T> KineticHeap<T> for KineticHanger<T> {
             let rp = Box::into_raw(Box::new(t));
             ffi::kinetic_hanger_push(self.inner, rp as *mut libc::c_void, aff.inner);
         }
+    }
+
+    fn cur_min_value(&self) -> i128 {
+        unsafe { ffi::kinetic_hanger_cur_min_value(self.inner) }
     }
 
     fn peek(&self) -> &T {
