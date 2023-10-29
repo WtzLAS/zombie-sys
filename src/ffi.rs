@@ -73,7 +73,7 @@ fn aff_test3() {
 #[test]
 fn kh_test1() {
     unsafe {
-        let kh = kinetic_hanger_new();
+        let kh = kinetic_hanger_new(0);
         let sz = kinetic_hanger_size(kh);
         let e = kinetic_hanger_empty(kh);
         assert_eq!(sz, 0);
@@ -84,7 +84,7 @@ fn kh_test1() {
 #[test]
 fn kh_test2() {
     unsafe {
-        let kh = kinetic_hanger_new();
+        let kh = kinetic_hanger_new(0);
         let aff = aff_function_new(10, 0);
         let t = Box::into_raw(Box::new(114514));
         kinetic_hanger_push(kh, t as *mut libc::c_void, aff);

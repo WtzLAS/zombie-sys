@@ -158,11 +158,14 @@ impl<T> Drop for KineticHanger<T> {
 
 #[test]
 fn kh_rtest1() {
-    let mut kh: KineticHanger<i32> = KineticHanger::new();
+    let mut kh: KineticHanger<i32> = KineticHanger::new(0);
     let aff = AffFunction::new(10, 0);
     assert_eq!(kh.len(), 0);
     assert_eq!(kh.is_empty(), true);
     kh.push(114514, &aff);
+    kh.advance_to(10);
+    print!("{}", kh.cur_min_value());
+    assert_eq!(kh.cur_min_value(), 100);
     assert_eq!(kh.len(), 1);
     assert_eq!(kh.is_empty(), false);
     assert_eq!(*kh.peek(), 114514);
