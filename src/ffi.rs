@@ -10,7 +10,7 @@ pub struct KineticHanger {
     _private: [u8; 0],
 }
 
-extern "C" {
+extern "C-unwind" {
     pub fn aff_function_new(slope: i128, x_shift: i64) -> *mut AffFunction;
     pub fn aff_function_eval(aff_function: *const AffFunction, shift: i64) -> i128;
     pub fn aff_function_lt_until(
