@@ -156,6 +156,53 @@ impl<T> Drop for KineticHanger<T> {
     }
 }
 
+pub struct Heap<T> {
+    inner: *mut ffi::Heap,
+    _marker: PhantomData<T>,
+}
+
+impl<T> Heap<T> {
+    fn len(&self) -> usize {
+        unsafe { ffi::heap_size(self.inner) }
+    }
+
+    fn is_empty(&self) -> bool {
+        unsafe { ffi::heap_empty(self.inner) }
+    }
+
+    fn push(&mut self, t: T, score: f64) {
+        unsafe {
+            let rp = Box::into_raw(Box::new(t));
+            ffi::heap_push(self.inner, rp as *mut libc::c_void, score);
+        }
+    }
+
+    fn peek(&self) -> &T {
+        unsafe { Box::leak(Box::from_raw(ffi::heap_peek(self.inner) as *mut T)) }
+    }
+
+    fn peek_mut(&mut self) -> &mut T {
+        unsafe { Box::leak(Box::from_raw(ffi::heap_peek(self.inner) as *mut T)) }
+    }
+
+    fn pop(&mut self) -> T {
+        unsafe { *Box::from_raw(ffi::heap_pop(self.inner) as *mut T) }
+    }
+}
+
+unsafe impl<T: Send> Send for Heap<T> { }
+
+impl<T> Drop for Heap<T> {
+    fn drop(&mut self) {
+        while !self.is_empty() {
+            self.pop();
+        }
+        unsafe {
+            ffi::heap_delete(self.inner);
+        }
+    }
+}
+
 #[test]
 fn kh_rtest1() {
     let mut kh: KineticHanger<i32> = KineticHanger::new(0);

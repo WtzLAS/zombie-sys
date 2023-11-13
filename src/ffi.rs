@@ -10,6 +10,11 @@ pub struct KineticHanger {
     _private: [u8; 0],
 }
 
+#[repr(C)]
+pub struct Heap {
+    _private: [u8; 0],
+}
+
 extern "C-unwind" {
     pub fn aff_function_new(slope: i128, x_shift: i64) -> *mut AffFunction;
     pub fn aff_function_eval(aff_function: *const AffFunction, shift: i64) -> i128;
@@ -22,6 +27,7 @@ extern "C-unwind" {
         rhs: *const AffFunction,
     ) -> *mut i128;
     pub fn aff_function_delete(aff_function: *mut AffFunction);
+
     pub fn kinetic_hanger_new(time: i64) -> *mut KineticHanger;
     pub fn kinetic_hanger_cur_min_value(hanger: *const KineticHanger) -> i128;
     pub fn kinetic_hanger_size(hanger: *const KineticHanger) -> libc::size_t;
@@ -38,6 +44,19 @@ extern "C-unwind" {
     pub fn kinetic_hanger_time(hanger: *const KineticHanger) -> i64;
     pub fn kinetic_hanger_advance_to(hanger: *mut KineticHanger, new_time: i64);
     pub fn kinetic_hanger_delete(hanger: *mut KineticHanger);
+
+    pub fn heap_new() -> *mut Heap;
+    pub fn heap_size(heap: *const Heap) -> libc::size_t;
+    pub fn heap_empty(heap: *const Heap) -> bool;
+    pub fn heap_push(
+        heap: *mut Heap,
+        t: *mut libc::c_void,
+        score: f64,
+    );
+    pub fn heap_peek(heap: *const Heap) -> *mut libc::c_void;
+    pub fn heap_peek_score(heap: *const Heap) -> f64;
+    pub fn heap_pop(heap: *mut Heap) -> *mut libc::c_void;
+    pub fn heap_delete(heap: *mut Heap);
 }
 
 #[test]
