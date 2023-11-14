@@ -162,37 +162,37 @@ pub struct Heap<T> {
 }
 
 impl<T> Heap<T> {
-    fn new() -> Heap<T> {
+    pub fn new() -> Heap<T> {
         Heap {
             inner: unsafe { ffi::heap_new() },
             _marker: PhantomData::default(),
         }
     }
 
-    fn len(&self) -> usize {
+    pub fn len(&self) -> usize {
         unsafe { ffi::heap_size(self.inner) }
     }
 
-    fn is_empty(&self) -> bool {
+    pub fn is_empty(&self) -> bool {
         unsafe { ffi::heap_empty(self.inner) }
     }
 
-    fn push(&mut self, t: T, score: f64) {
+    pub fn push(&mut self, t: T, score: f64) {
         unsafe {
             let rp = Box::into_raw(Box::new(t));
             ffi::heap_push(self.inner, rp as *mut libc::c_void, score);
         }
     }
 
-    fn peek(&self) -> &T {
+    pub fn peek(&self) -> &T {
         unsafe { Box::leak(Box::from_raw(ffi::heap_peek(self.inner) as *mut T)) }
     }
 
-    fn peek_mut(&mut self) -> &mut T {
+    pub fn peek_mut(&mut self) -> &mut T {
         unsafe { Box::leak(Box::from_raw(ffi::heap_peek(self.inner) as *mut T)) }
     }
 
-    fn pop(&mut self) -> T {
+    pub fn pop(&mut self) -> T {
         unsafe { *Box::from_raw(ffi::heap_pop(self.inner) as *mut T) }
     }
 }
