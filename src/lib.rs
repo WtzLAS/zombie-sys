@@ -188,6 +188,10 @@ impl<T> Heap<T> {
         unsafe { Box::leak(Box::from_raw(ffi::heap_peek(self.inner) as *mut T)) }
     }
 
+    pub fn peek_score(&self) -> f64 {
+        unsafe { ffi::heap_peek_score(self.inner) }
+    }
+
     pub fn peek_mut(&mut self) -> &mut T {
         unsafe { Box::leak(Box::from_raw(ffi::heap_peek(self.inner) as *mut T)) }
     }
