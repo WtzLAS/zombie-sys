@@ -162,6 +162,13 @@ pub struct Heap<T> {
 }
 
 impl<T> Heap<T> {
+    fn new() -> Heap<T> {
+        Heap {
+            inner: unsafe { ffi::heap_new() },
+            _marker: PhantomData::default(),
+        }
+    }
+
     fn len(&self) -> usize {
         unsafe { ffi::heap_size(self.inner) }
     }
@@ -219,4 +226,21 @@ fn kh_rtest1() {
     assert_eq!(kh.pop(), 114514);
     assert_eq!(kh.len(), 0);
     assert_eq!(kh.is_empty(), true);
+}
+
+#[test]
+fn heap_test1() {
+    let mut h = Heap::new();
+    assert_eq!(h.len(), 0);
+    h.push(1, 2.0);
+    assert_eq!(h.len(), 1);
+    h.push(3, 1.0);
+    assert_eq!(h.len(), 2);
+    let x = h.pop();
+    assert_eq!(x, 3);
+    assert_eq!(h.len(), 1);
+    assert_eq!(*h.peek(), 1);
+    let y = h.pop();
+    assert_eq!(y, 1);
+    assert_eq!(h.len(), 0);
 }
